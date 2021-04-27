@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.offcn.mapper.SourcesMapper" >
+  <resultMap id="BaseResultMap" type="com.offcn.bean.Sources" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="getInfoByEid" resultMap="BaseResultMap">
+    SELECT
+    *
+    FROM
+    sources
+    WHERE id IN
+    (SELECT
+    resources_fk
+    FROM
+    role_sources
+    WHERE role_fk =#{roleid}
+    )
+    <if test="mark==1">
+      AND pid IS NOT NULL AND url IS NULL
+    </if>
+    <if test="mark==2">
+      AND pid =#{pid}
+    </if>
+  </select>
+
+  <select id="getSourcesByRoleid" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    SELECT
+      *
+    FROM
+      sources
+    WHERE id IN
+      (SELECT
+        resources_fk
+      FROM
+        role_sources
+      WHERE role_fk = #{roleid})
+      AND url IS NOT NULL
+  </select>
+
+  <!--deleteSourcesById-->
+  <delete id="deleteSourcesById" parameterType="java.lang.Integer">
+    delete from sources where id = #{id}
+  </delete>
+
+  <!--insertSources-->
+  <insert id="insertSources" parameterType="com.offcn.bean.Sources" useGeneratedKeys="true" keyProperty="id">
+      insert into  sources
+        (id,name,url,remark,pid,icon) values(#{id},#{name},#{url},#{remark},#{pid},#{icon})
+  </insert>
+
+  <!--updateSources-->
+  <update id="updateSources" parameterType="com.offcn.bean.Sources">
+    update sources
+    <set>
+      <if test="name!=null">
+        name=#{name},
+      </if>
+      <if test="url!=null">
+        url=#{url},
+      </if>
+      <if test="remark!=null">
+        remark=#{remark},
+      </if>
+      <if test="pid!=null">
+        pid=#{pid},
+      </if>
+      <if test="icon!=null">
+        icon=#{icon},
+      </if>
+    </set>
+    <where>
+      id=#{id}
+    </where>
+  </update>
+
+  <select id="getRootSources" resultMap="BaseResultMap">
+    select  id, name, pid from sources where id = 1
+  </select>
+
+  <select id="getChildren" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select  id, name, pid from sources where pid=#{pid}
+  </select>
+  
+  <!--//selectByPrimaryKey-->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select * from sources where id = #{id}
+  </select>
+
+
+</mapper>

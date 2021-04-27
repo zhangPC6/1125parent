@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.offcn.mapper.RoleMapper">
+    <resultMap id="BaseResultMap" type="com.offcn.bean.Role">
+        <id column="roleid" jdbcType="INTEGER" property="roleid"/>
+        <result column="rolename" jdbcType="VARCHAR" property="rolename"/>
+        <result column="roledis" jdbcType="VARCHAR" property="roledis"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+    </resultMap>
+
+    <delete id="deleteRoleByPk">
+        delete from role
+        <where>
+            <foreach collection="array" open="roleid in (" separator="," item="roleid" close=")">
+                #{roleid}
+            </foreach>
+        </where>
+    </delete>
+
+    <!-- 更新数据  -->
+    <update id="updateInfoByRoleId" parameterType="com.offcn.bean.Role">
+        update role
+        <set>
+            <if test="rolename!=null">
+                rolename=#{rolename},
+            </if>
+            <if test="roledis!=null">
+                roledis=#{roledis},
+            </if>
+            <if test="status!=null">
+                status=#{status},
+            </if>
+        </set>
+        <where>
+            roleid=#{roleid}
+        </where>
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        select * from role where roleid=#{roleid}
+    </select>
+
+    <select id="selectAllRole" resultMap="BaseResultMap">
+      select * from role
+    </select>
+
+    <!--addRole-->
+    <insert id="addRole" parameterType="com.offcn.bean.Role" useGeneratedKeys="true" keyProperty="roleid">
+     insert into role
+        (roleid,rolename,roledis,status)  values(#{roleid},#{rolename},#{roledis},#{status})
+    </insert>
+</mapper>

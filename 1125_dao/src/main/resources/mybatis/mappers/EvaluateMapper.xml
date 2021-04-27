@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.offcn.mapper.EvaluateMapper">
+  <resultMap id="BaseResultMap" type="com.offcn.bean.Evaluate">
+    <id column="evaid" jdbcType="INTEGER" property="evaid" />
+    <result column="forum_fk" jdbcType="INTEGER" property="forumFk" />
+    <result column="emp_fk" jdbcType="INTEGER" property="empFk" />
+    <result column="evaid_fk" jdbcType="INTEGER" property="evaidFk" />
+    <result column="evacontent" jdbcType="VARCHAR" property="evacontent" />
+    <result column="updatetime" jdbcType="DATE" property="updatetime" />
+  </resultMap>
+
+</mapper>

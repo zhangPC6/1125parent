@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.offcn.mapper.DeptMapper" >
+
+
+
+  <resultMap id="BaseResultMap" type="com.offcn.bean.Dept" >
+    <id column="deptno" property="deptno" jdbcType="INTEGER" />
+    <result column="dname" property="dname" jdbcType="VARCHAR" />
+    <result column="local" property="local" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <insert id="addOneDept" parameterType="com.offcn.bean.Dept" useGeneratedKeys="true" keyProperty="deptno">
+        insert into dept(dname, local) values (#{dname},#{local})
+  </insert>
+
+  <insert id="batchAddInfo" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="deptno">
+    insert into dept values
+    <foreach collection="list" separator="," item="dept">
+      (#{dept.deptno},#{dept.dname},#{dept.local})
+    </foreach>
+  </insert>
+
+  <select id="showDept" resultMap="BaseResultMap">
+    select * from dept
+  </select>
+
+  <select id="getDeptByPk" resultMap="BaseResultMap">
+    select * from dept where deptno=#{pk}
+  </select>
+
+</mapper>

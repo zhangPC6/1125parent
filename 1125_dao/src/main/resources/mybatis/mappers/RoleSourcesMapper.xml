@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.offcn.mapper.RoleSourcesMapper" >
+  <resultMap id="BaseResultMap" type="com.offcn.bean.RoleSources" >
+    <id column="rsid" property="rsid" jdbcType="INTEGER" />
+    <result column="rsdis" property="rsdis" jdbcType="VARCHAR" />
+    <result column="resources_fk" property="resourcesFk" jdbcType="INTEGER" />
+    <result column="role_fk" property="roleFk" jdbcType="INTEGER" />
+  </resultMap>
+
+  <delete id="deleteRoleSourcesByRoleid">
+    delete from role_sources
+    <where>
+      <foreach collection="array" open="role_fk in (" item="roleid" separator="," close=")">
+        #{roleid}
+      </foreach>
+    </where>
+  </delete>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select * from role_sources
+  </select>
+
+  <!--batchAddInfo-->
+  <insert id="batchAddInfo" parameterType="java.util.List">
+    insert into role_sources(rsid, rsdis, resources_fk, role_fk) values 
+    <foreach collection="list" item="rs" separator=",">
+      (#{rs.rsid}, #{rs.rsdis}, #{rs.resourcesFk}, #{rs.roleFk})
+    </foreach>
+  </insert>
+
+  <!--deleteRoleSourcesById-->
+  <delete id="deleteRoleSourcesById">
+    delete from role_sources where resources_fk = #{id}
+  </delete>
+</mapper>

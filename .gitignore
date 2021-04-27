@@ -1,0 +1,6 @@
+# Project exclude paths
+/1125_commons/target/
+/1125_dao/target/
+/1125_service/target/
+/1125_web/target/
+/out/
